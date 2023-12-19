@@ -1,0 +1,8 @@
+fileignoreconfig:
+- filename: talisman.rc
+  checksum: b1e81902c1e0695c2e598d3d798e55e9af70f519d9ef8769ebd8d0dc06bd48dd
+- filename: src/main/java/org/example/Part2.java
+  checksum: ed5ad215e2c32b1f5b3d7c40b2a1e3bad95926e72ff7a59d6b1cc056f279ad14
+version: ""
+
+
