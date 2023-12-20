@@ -10,41 +10,32 @@ public class Part1 {
         part2 = new Part2();
     }
     public void execute() {
+
         String[] input = producer.getInput().split("\n");
-
         int sum = 0;
-        for (int i = 0; i< input.length; i++) {
+        for (int i =0; i<input.length; i++) {
+            String[] games = input[i].trim().split(":");
 
-            int j = 0;
-            int k = input[i].length()-1;
-            int number1 = 0;
-            int number2 = 0;
-            boolean one = true, two = true;
-            while (one || two) {
-                int num1 = part2.execute(input[i].substring(0,j));
-                int num2 = part2.execute(input[i].substring(k));
-                if (one && num1 > -1) {
-                    number1 = num1;
-                    one = false;
-                }
-                else if (one && (input[i].charAt(j) >= '0' && input[i].charAt(j) <= '9')) {
-                    number1 = input[i].charAt(j)-'0';
-                    one = false;
-                } else {
-                    j++;
-                }
-                if (two && num2 > -1) {
-                    number2 = num2;
-                    two = false;
-                }
-                else if (two && (input[i].charAt(k) >= '0' && input[i].charAt(k) <= '9')) {
-                    number2 = input[i].charAt(k)-'0';
-                    two = false;
-                } else {
-                    k--;
+            String[] colorSets = games[1].trim().split(";");
+
+            int red = 1;
+            int green = 1;
+            int blue = 1;
+            for (String colorSet : colorSets) {
+                String[] colors = colorSet.trim().split(",");
+
+                for(String color: colors) {
+                    String[] value = color.trim().split(" ");
+                    if (value[1].equals("red") && Integer.parseInt(value[0]) > red) {
+                        red = Integer.parseInt(value[0]);
+                    }else if (value[1].equals("green") && Integer.parseInt(value[0]) > green) {
+                        green = Integer.parseInt(value[0]);
+                    }else if (value[1].equals("blue") && Integer.parseInt(value[0]) > blue) {
+                        blue = Integer.parseInt(value[0]);
+                    }
                 }
             }
-            sum += number1*10 + number2;
+            sum += red*green*blue;
         }
         System.out.println(sum);
     }
