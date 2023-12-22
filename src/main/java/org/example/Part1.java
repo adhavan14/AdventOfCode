@@ -9,33 +9,44 @@ public class Part1 {
         producer = new Producer();
         part2 = new Part2();
     }
+
+    private boolean checkValidCode(String[] input, int j, int i ) {
+        String special = "!@#$%^&*()_-+=?/";
+        if ((j<input.length-1 && special.indexOf(input[j+1].charAt(i)) > 0)
+        || (j>0 && special.indexOf(input[j-1].charAt(i)) > 0)
+        || (i<input[j].length()-1 && special.indexOf(input[j].charAt(i+1)) > 0)
+        || (i>0 && special.indexOf(input[j].charAt(i-1)) > 0)
+        || (j<input.length-1 && i<input[j].length()-1 && special.indexOf(input[j+1].charAt(i+1)) > 0)
+        || (j<input.length-1 && i>0 && special.indexOf(input[j+1].charAt(i-1)) > 0)
+        || (j>0 && i<input[j].length()-1 && special.indexOf(input[j-1].charAt(i+1)) > 0)
+        || (j>0 && i>0 && special.indexOf(input[j-1].charAt(i-1)) > 0)) {
+            return true;
+        }
+        return false;
+    }
+
     public void execute() {
 
         String[] input = producer.getInput().split("\n");
         int sum = 0;
-        for (int i =0; i<input.length; i++) {
-            String[] games = input[i].trim().split(":");
-
-            String[] colorSets = games[1].trim().split(";");
-
-            int red = 1;
-            int green = 1;
-            int blue = 1;
-            for (String colorSet : colorSets) {
-                String[] colors = colorSet.trim().split(",");
-
-                for(String color: colors) {
-                    String[] value = color.trim().split(" ");
-                    if (value[1].equals("red") && Integer.parseInt(value[0]) > red) {
-                        red = Integer.parseInt(value[0]);
-                    }else if (value[1].equals("green") && Integer.parseInt(value[0]) > green) {
-                        green = Integer.parseInt(value[0]);
-                    }else if (value[1].equals("blue") && Integer.parseInt(value[0]) > blue) {
-                        blue = Integer.parseInt(value[0]);
+        for (int j=0;j<input.length;j++) {
+            boolean flag = false;
+            int num = 0;
+            for (int i=0;i<input[j].length();i++) {
+                if(input[j].charAt(i) >= '0' && input[j].charAt(i) <= '9') {
+                    num = num * 10 + input[j].charAt(i)-'0';
+                    if (checkValidCode(input, j, i)) {
+                        flag = true;
                     }
+                } else {
+                    System.out.println(num);
+                    if (flag)
+                        sum += num;
+                    num=0;
+                    flag = false;
                 }
             }
-            sum += red*green*blue;
+            sum += num;
         }
         System.out.println(sum);
     }
